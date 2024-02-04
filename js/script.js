@@ -26,7 +26,7 @@ $(document).ready(function() {
         document.getElementById('rooms_form').action = url;
     }
 
-    // write_in_google_sheets();
+    write_in_google_sheets();
 
 
 
