@@ -17,7 +17,7 @@ $(document).ready(function() {
     var PARENT;
     var CHILDREN = [];
     var TYPE = "male";
-    const url = "https://script.google.com/macros/s/AKfycbzlakBNVMxBWAllJEbynyDS4_RABaXBZ7mrGTY95AXApj6SogEYEVA_BwJuceGpgYVRGg/exec";
+    const url = "https://script.google.com/macros/s/AKfycbwBCuhcSyYKZjkf64U4gr9Z-qeFMOfyrhZwFvyTnyWSTf4GLfnskGysO3JBpnaT-pyAzQ/exec";
 
 
 
