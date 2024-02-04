@@ -2,7 +2,8 @@ $(document).ready(function() {
     var main = $("#main");
     var editor = $('#editor');
     var base = $('#base');
-    var sensitivity = 5; // Adjust the sensitivity based on your preference
+    var sensitivity = 10; // Adjust the sensitivity based on your preference
+    var SCROLL_SPEED = 10;
     var topScroll = false;
     var bottomScroll = false;
     var leftScroll = false;
@@ -16,6 +17,49 @@ $(document).ready(function() {
     var PARENT;
     var CHILDREN = [];
     var TYPE = "male";
+    const url = "https://script.google.com/macros/s/AKfycbzlakBNVMxBWAllJEbynyDS4_RABaXBZ7mrGTY95AXApj6SogEYEVA_BwJuceGpgYVRGg/exec";
+
+
+
+    //post
+    function write_in_google_sheets() {
+        document.getElementById('rooms_form').action = url;
+    }
+
+    // write_in_google_sheets();
+
+
+
+
+    // get
+    $("#login_form")[0].addEventListener("submit", function (event) {
+    event.preventDefault();
+    
+    // Get form data
+    var form = event.target;
+    var formData = new FormData(form);
+    
+    // Send data to App Script
+    fetch(url + "?" + new URLSearchParams(formData))
+        .then(function (response) {
+        return response.json();
+        })
+        .then(function (data) {
+        console.log(data);
+        if(data == false) {
+            alert("False");
+        }
+        else {
+            joinRoom(data);
+        }
+        
+        })
+        .catch(function (error) {
+        // Handle errors
+        console.error(error);
+        });
+    });
+
 
     var DATA_ARRAY = [];
 
@@ -33,10 +77,6 @@ $(document).ready(function() {
             $(".fa-list").addClass("icon-active");
         }
     })
-
-    
-    
-
 
     editor.mousemove(function(e) {
         if(!MOUSE_DOWN) {
@@ -84,10 +124,6 @@ $(document).ready(function() {
             pos3 = e.clientX;
             pos4 = e.clientY;
 
-            // // set the element's new position:
-            // elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            // elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-
             let boxes = CHILDREN;
             for (let i = 0; i < boxes.length; i++) {
                 boxes[i].style.top = (boxes[i].offsetTop - pos2) + "px";
@@ -129,7 +165,7 @@ $(document).ready(function() {
         main.scrollTop(main.scrollTop() - sensitivity);
         console.log(main.scrollTop());
         if(topScroll) {
-            setTimeout(scrollTop, 25);
+            setTimeout(scrollTop, SCROLL_SPEED);
         }
     }
 
@@ -137,7 +173,7 @@ $(document).ready(function() {
         main.scrollTop(main.scrollTop() + sensitivity);
         console.log(main.scrollTop());
         if(bottomScroll) {
-            setTimeout(scrollBottom, 25);
+            setTimeout(scrollBottom, SCROLL_SPEED);
         }
     }
 
@@ -145,7 +181,7 @@ $(document).ready(function() {
         main.scrollLeft(main.scrollLeft() - sensitivity);
         console.log(main.scrollLeft());
         if(leftScroll) {
-            setTimeout(scrollLeft, 25);
+            setTimeout(scrollLeft, SCROLL_SPEED);
         }
     }
 
@@ -153,7 +189,7 @@ $(document).ready(function() {
         main.scrollLeft(main.scrollLeft() + sensitivity);
         console.log(main.scrollLeft());
         if(rightScroll) {
-            setTimeout(scrollRight, 25);
+            setTimeout(scrollRight, SCROLL_SPEED);
         }
     }
    
@@ -324,13 +360,10 @@ $(document).ready(function() {
             div.classList.add("focused");
             div.style.top = y + "px";
             div.style.left = x + "px";
-
             let input = document.createElement("INPUT");
             input.classList.add("name");
             div.append(input);
             editor.append(div);
-
-
             let ul = document.createElement("UL");
             ul.id = "list";
             let li = document.createElement("LI");
@@ -338,7 +371,7 @@ $(document).ready(function() {
             li.classList.add("list-a");
             let p = document.createElement("P");
             p.classList.add("list-name");
-            p.innerText = "temp first";
+            p.innerText = "-------";
             li.append(p);
             ul.append(li);
             $("#sideList").append(ul);
@@ -371,7 +404,7 @@ $(document).ready(function() {
                 let p = document.createElement("P");
                 p.classList.add("list-" + new_class);
                 p.classList.add("wife");
-                p.innerText = "temp wife";
+                p.innerText = "---- wife";
                 let husband = $(`.list-${parent_class}`);
                 husband.append(p);
             }
@@ -382,7 +415,7 @@ $(document).ready(function() {
                 li.classList.add(type);
                 let p = document.createElement("P");
                 p.classList.add("list-name");
-                p.innerText = "temp " + type;
+                p.innerText = "---- " + type;
                 li.append(p);
                 ul.append(li);
                 $(`.list-${parent_class}`).append(ul);
@@ -423,7 +456,6 @@ $(document).ready(function() {
             $(".focused-bond").removeClass("focused-bond");
         }
 
-
         if($(this).hasClass("wife")) {
             let class_name = $(this)[0].classList[0];
             let bond = $(`.b-${class_name}`)[0];
@@ -436,7 +468,6 @@ $(document).ready(function() {
         else {
             $(this).addClass("focused");
         }
-        
 
         if(DRAG_OPTION) {
             // define parent and children
@@ -450,8 +481,6 @@ $(document).ready(function() {
     editor.on("click", ".box", function(e) {
         e.stopPropagation();
     })
-
-
 
     $(".fa-list").click(function() {
         $(this).toggleClass("icon-active");
@@ -513,8 +542,6 @@ $(document).ready(function() {
             line.remove();
         }
 
-
-
         $("#delete").addClass("hidden");
     })
 
@@ -522,7 +549,4 @@ $(document).ready(function() {
         $("#delete").addClass("hidden");
         $(".deleting").removeClass("deleting");
     })
-
-
-
 });

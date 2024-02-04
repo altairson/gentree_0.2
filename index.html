@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/2f670d51e7.js" crossorigin="anonymous"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <link rel="stylesheet" href="./css/style.css">
 <link rel="stylesheet" href="./css/loading.css">
@@ -51,53 +52,6 @@
             <div class="handle opened">
                 
             </div>
-            <!-- <ul id="list">
-                <li class="male">shoukhal
-                    <ul>
-                        <li class="male">shemil <p class="wife">mariko</p>
-                            <ul>
-                                <li class="male">viso <p class="wife female">madina</p>
-                                    <ul>
-                                        <li class="male">ruben <p class="wife">peetimat</p>
-                                            <ul>
-                                        <li class="female">mariem</li>
-                                                <li class="male">iusub</li>
-                                                <li class="female">nuria</li>
-                                            </ul>
-                                        </li>
-                                        <li>shoukhal <p class="wife">nata</p>
-                                            <ul>
-                                                <li class="male">shakhbuolat</li>
-                                            </ul>
-                                        </li>
-                                        <li class="male">aslan</li>
-                                        <li class="female">mariem</li>
-                                        <li class="female">maradi</li>
-                                        <li class="male">shemil</li>
-                                        <li class="male">mukhmad</li>
-                                    </ul>
-                                </li>
-                                <li class="female">mzia</li>
-                                <li class="female">eti</li>
-                                <li class="female">lia</li>
-                            </ul>
-                        </li>
-                        <li class="male">bato <p class="wife female">medi</p>
-                            <ul>
-                                <li class="male">ramzan <p class="wife female">larisa</p>
-                                    <ul>
-                                        <li class="female">peetimat</li>
-                                        <li class="male">mukhmad</li>
-                                        <li class="female">mediinat</li>
-                                        <li class="male">muusa</li>
-                                        <li class="male">loomi</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul> -->
         </div>
         <div id="editor">
                 <svg id="lines" width="auto" height="auto" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg>
@@ -107,11 +61,82 @@
                 </div>
         </div>
     </main>
+
+
+
+    <div id="void">
+        <!-- Dummy frame to avoid new page loading on form submit -->
+        <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+
+        <form id="rooms_form" target="dummyframe" method="POST">
+            <div class="form__group field">
+                <input type="input" class="form__field" placeholder="email" name="sEmail" id='sEmail' />
+                <label for="sEmail" class="form__label">email</label>
+            </div>
+            <div class="tg-btn">
+                <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="weeotc_bot" data-size="medium" data-userpic="false" data-onauth="onTelegramAuth(user)"></script>
+            </div>
+            <div class="form__group field">
+                <input type="input" class="form__field" placeholder="" name="tg_id" id='tg_id' required />
+                <label for="tg_id" class="form__label">Telegram ID</label>
+            </div>
+            <div class="form__group field">
+                <input type="input" class="form__field" placeholder="" name="tg_username" id='tg_username' required />
+                <label for="tg_username" class="form__label">Telegram Username</label>
+            </div>
+            <div class="form__group field">
+                <input type="input" class="form__field" placeholder="" name="tg_name" id='tg_name' required />
+                <label for="tg_name" class="form__label">Telegram Name</label>
+            </div>
+            <div class="form__group field">
+                <input type="password" class="form__field" placeholder="password" name="spassword" id='spassword' required />
+                <label for="spassword" class="form__label">password</label>
+            </div>
+            <div class="button">
+                <button type="submit" id="signup">Create</button>
+            </div>
+        </form>
+
+    
+        <form id="login_form"  class="hidden" target="dummyframe" method="GET">
+            <div class="form__group field">
+                <input type="text" class="form__field" placeholder="email" name="email" id='email' required />
+                <label for="email" class="form__label">Email</label>
+            </div>
+            <br>
+            <div class="form__group field">
+                <input type="password" class="form__field" placeholder="password" name="password" id='password' required />
+                <label for="password" class="form__label">password</label>
+            </div>
+            <div class="button">
+                <button type="submit" id="login">Log in</button>
+            </div>
+        </form>
+    </div>
+
+
+
     <div id="options">
         <i class="fa-solid fa-trash"></i>
         <i class="fa-solid fa-up-down-left-right"></i>
         <i class="fa-solid fa-list"></i>
     </div>
     <script src="./js/script.js"></script>
+    <script>
+        // user auth with telegram
+        function onTelegramAuth(user) {
+            if (user) {
+                displayUserInfo(user);
+            }
+            alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+        }
+
+        function displayUserInfo(user) {
+            $("#tg_name").val(user.first_name + ' ' + user.last_name);
+            $("#tg_id").val(user.id);
+            $("#tg_username").val((user.username ? '@' + user.username : ''));
+        }
+    </script>
 </body>
 </html>
